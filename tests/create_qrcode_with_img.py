@@ -10,7 +10,7 @@ qr = qrcode.QRCode(
 )
 
 # Добавление данных в QR-код
-data = "https://www.citybox59.ru"
+data = "I_love_you"
 qr.add_data(data)
 qr.make(fit=True)
 
@@ -19,7 +19,7 @@ qr_img = qr.make_image(fill_color="black", back_color="white")
 qr_img = qr_img.convert("RGBA")
 
 # Загрузка изображения для центрального размещения
-center_image = Image.open("favicon.ico")
+center_image = Image.open("test2.png")
 
 # Центрирование изображения
 qr_width, qr_height = qr_img.size
