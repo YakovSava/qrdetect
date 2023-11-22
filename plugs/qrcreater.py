@@ -7,12 +7,16 @@ class QRCodeGenerator:
 
     def __init__(self,
             back_img:str=None,
-            qr_model:QRCode=None
+            qr_model:QRCode=None,
+            qr_path:str=None
         ):
-        if not back_img:
+        if (not back_img) or (not qr_path):
             raise
         else:
             self._center_image = Image.open(back_img)
+            if qr_path.endswith('/'):
+                qr_path += '/'
+            self._qr_path = qr_path
         if qr_model is None:
             self._qr_model = QRCode(
                 version=1,
@@ -28,7 +32,7 @@ class QRCodeGenerator:
 
     def make_qr(self, data:Any=None) -> str:
         data = str(data)
-        filename = self._made_filename(data)
+        filename = self._qr_path+self._made_filename(data)+".png"
 
         self._qr_model.add_data(data)
         self._qr_model.make(fit=True)
@@ -42,5 +46,5 @@ class QRCodeGenerator:
         center_y = int((qr_height - center_height) / 2)
         qr_img.paste(self._center_image, (center_x, center_y), self._center_image)
 
-        qr_img.save(filename+".png")
+        qr_img.save(filename)
         return filename

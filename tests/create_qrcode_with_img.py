@@ -10,7 +10,7 @@ qr = qrcode.QRCode(
 )
 
 # Добавление данных в QR-код
-data = "I_love_you"
+data = "I_love_you" # Karina I love you
 qr.add_data(data)
 qr.make(fit=True)
 
