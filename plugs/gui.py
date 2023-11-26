@@ -49,7 +49,18 @@ class App(CTk):
         self.okbut.pack(pady=10)
 
     def _restart(self):
-        pass
+        self.exit_label.destroy()
+        self.exit_job.destroy()
+        self.color_label.destroy()
+        self.color_menu.destroy()
+        self.size_label.destroy()
+        self.size_menu.destroy()
+        self.okbut.destroy()
+
+        if askokcancel("QR Generator: question", "Вы уверены?"):
+            self._start()
+        else:
+            self._switch()
 
 
 if __name__ == "__main__":
