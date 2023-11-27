@@ -1,16 +1,29 @@
 from tkinter.messagebox import askokcancel
+from toml import loads
 from customtkinter import CTk, CTkLabel, CTkEntry, CTkButton,\
     CTkOptionMenu
 
+class AppConfig:
+
+    def __init__(self):
+        self._config_filename = "appconf.ini"
+
+    def _load(self):
+        with open(self._config_filename, 'r', encoding='utf-8') as file:
+            self.conf = loads(file.read())
+
+    def __getitem__(self, itemname:str):
+        return self.conf.get(itemname)
+
 class App(CTk):
 
-    def __init__(self, img_path:str=""):
+    def __init__(self):
         super().__init__()
 
         self.title("CityBox: QR Generator")
         self.geometry("500x400")
 
-        self._img_path = img_path
+        # self._img_path = img_path
 
         self._start()
 
