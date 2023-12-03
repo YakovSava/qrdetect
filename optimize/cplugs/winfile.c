@@ -1,4 +1,4 @@
-# include "cwinfile.h"
+# include "cwinfile.hpp"
 # include "ctopy.hpp"
 # include <Python.h>
 
