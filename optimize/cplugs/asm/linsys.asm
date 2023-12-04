@@ -4,21 +4,24 @@ public Cread
 public Cwrite
 public exists
 
-section ".bss" readable writeable
-    db _buffer, 0
+section '.filedesc' executable
+    
 
-section ".code" executable
+section '.Cread' executable
     Cread:
-        xor eax, eax ; temporary stub
         ret
+
+section '.Cwrite' executable
     Cwrite:
-        xor eax, eax ; temporary stub
         ret
+
+section '.exists' executable
     exists:
-        xor eax, eax ; temporary stub
         ret
+
+section '.exit' executable
     exit:
-        xor eax, eax ; mov eax, 1
-        inc eax
-        xor ebx, ebx ; mov ebx, 0
+        xor rax, rax
+        inc rax
+        xor rbx, rbx
         int 0x80
