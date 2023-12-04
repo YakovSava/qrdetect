@@ -7,7 +7,7 @@ if platform.startswith('linux'):
     from .cplugs.linfile import Bind
     from .cplugs.connector import Connector
 elif platform == "win32":
-    if len(filter(lambda x: x.endswith('.so'), listdir('./cplugs/'))) != 1:
+    if len(filter(lambda x: x.endswith('.pyd'), listdir('./cplugs/'))) != 1:
         LIBPATH = ...
     from .cplugs.winfile import Bind
 
@@ -16,9 +16,13 @@ elif platform == "win32":
     class Connector:
 
         def __init__(self):
-            ...
+            self._reqc = 0
 
         def connect(self, url:str) -> str:
+            self._reqc += 1
             return get(url).text
+            
+        def reqcount(self) -> int:
+            return self._reqc
 else:
     raise ImportError('Platform not supported!')
