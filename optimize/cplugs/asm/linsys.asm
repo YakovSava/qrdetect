@@ -4,8 +4,8 @@ public Cread
 public Cwrite
 public exists
 
-section ".bss" readable writeable
-    db _buffer, 0
+section '.filedesc' executable
+    
 
 section '.Cread' executable
     Cread:
