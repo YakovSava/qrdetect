@@ -1,5 +1,7 @@
 # include <Python.h>
 # include "ctopy.hpp"
+# include <boost/python.hpp>
+using namespace boost::python;
 
 class Connector {
 public:
@@ -17,3 +19,9 @@ public:
 private:
   int reqc;
 };
+
+BOOST_PYTHON_MODULE(Connector) {
+    class_<Connector>("Connector")
+        .def("connect", &Connector::connect)
+        .def("reqcount", &Connector::reqcount);
+}
