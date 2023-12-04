@@ -1,7 +1,9 @@
 from sys import platform
-from os import listdir
+from os import listdir, popen
 
 if platform.startswith('linux'):
+    if "aarch" in popen("lscpu | grep Architecture").read():
+        raise Exception("ARM not supported!")
     if len(filter(lambda x: x.endswith('.so'), listdir('./cplugs/'))) != 2:
         LIBPATH = '/lib/python'
     from .cplugs.linfile import Bind
