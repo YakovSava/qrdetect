@@ -31,21 +31,36 @@ section '.filedesc' executable
         int 0x80
         ret
     asmfclose:
+    ; Input:
+    ;   rax - descriptor
         mov rbx, rax
         mov rax, 6 ; close
         int 0x80
         ret
     asmfdelete:
+    ; Input:
+    ;   rax - descriptor
         mov rbx, rax
         mov rax, 10 ; unlink
         int 0x80
         ret
     asmfseek:
+    ; Input:
+    ;   rax - descriptor
+    ;   rbx - mode
+    ;       set - 0
+    ;       cur - 1
+    ;       end - 2
+    ;   rcx - position
         mov rdx, rbx
         mov rbx, rax
         mov rax, 19 ; seek
         int 0x80
     asmfread:
+    ; Input:
+    ;   rax - descriptor
+    ;   rbx - buffer
+    ;   rcx - buffer size
         push rbx
         push rcx
     
@@ -62,13 +77,17 @@ section '.filedesc' executable
         mov rax, 3 ; read
         int 0x80
     asmfwrite:
+    ; Input:
+    ;   rax - descriptor
+    ;   rbx - data
+    ;   rcx - data size
         push rbx
         push rcx
     
         mov rbx, 1 
         xor rcx, rcx
         call fseek
-    
+    .
         pop rcx
         pop rbx
     
