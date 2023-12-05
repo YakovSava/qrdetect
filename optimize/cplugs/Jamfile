@@ -1,0 +1,7 @@
+lib boost_python::<name>boost_python;
+
+project:requirements <library>boost_python;
+
+python-extension connector:connector.cpp;
+
+explicit connector;
