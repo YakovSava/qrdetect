@@ -2,7 +2,9 @@ format COFF
 
 public Cread
 public Cwrite
-public exists
+
+extrn Cread
+extrn Cwrite
 
 section '.filedesc' executable
     asmfcreate:
@@ -103,10 +105,6 @@ section '.Cread' executable
 
 section '.Cwrite' executable
     Cwrite:
-        ret
-
-section '.exists' executable
-    exists:
         ret
 
 section '.exit' executable
