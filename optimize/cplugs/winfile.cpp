@@ -1,10 +1,6 @@
+# include "cwinfile.hpp"
 # include "ctopy.hpp"
 # include <Python.h>
-# include <stdint.h>
-
-static extern uint64_t Cread(char* filename);
-static extern uint16_t Cwrite(char* filename, char* lines);
-static extern uint8_t exists(char* filename);
 
 static PyObject* write(PyObject *self, PyObject *args) {
 	PyObject* filename_obj;
@@ -38,7 +34,7 @@ static PyObject* exists_file(PyObject* self, PyObject* args) {
 		return NULL;
 	}
 
-	int result = exists(str_to_string(filename)); // 1 or 0
+	bool result = exists(str_to_string(filename));
 
 	return result ? Py_True : Py_False;
 }
@@ -52,12 +48,12 @@ static PyMethodDef methods[] = {
 
 static struct PyModuleDef module = {
     PyModuleDef_HEAD_INIT,
-    "linfile",
-    "I'm fine",
+    "winfile",
+    "File Manager for Windows",
     -1,
     methods
 };
 
-PyMODINIT_FUNC PyInit_linfile(void) {
+PyMODINIT_FUNC PyInit_winfile(void) {
     return PyModule_Create(&module);
 }

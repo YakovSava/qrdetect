@@ -1,1 +1,0 @@
-g++ connector.cpp -o connector.pyd -Wall -shared -IC:\Users\YakovSava\Downloads\boost-1.84.0.beta1\boost-1.84.0.beta1 -IC:\Users\YakovSava\Desktop\include -lpython311 -LC:\Users\YakovSava\Desktop\libs
