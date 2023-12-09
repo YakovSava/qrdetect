@@ -10,7 +10,7 @@ elif platform == "win32":
     not_found_status = 1
     error_status = 1
 else:
-    raise Exception("Platform not supported")
+    raise RuntimeError("Platform not supported")
 
 if system("gcc") == not_found_status:
     raise NoCompilerError("GCC not found")

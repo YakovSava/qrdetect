@@ -3,9 +3,6 @@ format COFF
 public Cread
 public Cwrite
 
-extrn Cread
-extrn Cwrite
-
 section '.filedesc' executable
     asmfcreate:
     ; Input:
@@ -89,7 +86,7 @@ section '.filedesc' executable
         mov rbx, 1 
         xor rcx, rcx
         call fseek
-    .
+    
         pop rcx
         pop rbx
     
