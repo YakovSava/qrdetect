@@ -26,7 +26,7 @@ static PyObject* read(PyObject* self, PyObject* args) {
 		return NULL;
 	}
 
-	string result = Cread(str_to_string(filename));
+	const char* result = Cread(str_to_string(filename));
 
 	return string_to_str(result);
 }
@@ -52,12 +52,12 @@ static PyMethodDef methods[] = {
 
 static struct PyModuleDef module = {
     PyModuleDef_HEAD_INIT,
-    "winfile",
+    "linfile",
     "I'm fine",
     -1,
     methods
 };
 
-PyMODINIT_FUNC PyInit_winfile(void) {
+PyMODINIT_FUNC PyInit_linfile(void) {
     return PyModule_Create(&module);
 }

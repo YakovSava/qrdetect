@@ -30,8 +30,8 @@ static PyObject* map_to_dict(map<string, int> db) {
   return dict;
 }
 
-static PyObject* string_to_str(string c_str) {
-	return PyUnicode_FromString(c_str.c_str());
+static PyObject* string_to_str(const char* c_str) {
+	return PyUnicode_FromString(c_str);
 }
 
 const char* str_to_string(PyObject* python_string) {
