@@ -1,19 +1,15 @@
-CCP=g++
-CC=gcc
-FSM=fasm
-CFLAGS=-I
+CC = gcc
+PY = python3
+PYFLAGS = build_ext --inplace
 
-all: connector.so linfile.so
+all: linfile.so
 
-connector.so: connector.cpp
-	b2 Jamfile
-
-linfile.so: linsys.o linfile.c
-	$(CC) $(CFLAGS) linfile.c
+linfile.so: linsys.o linfile.cpp connector.cpp
+	$(PY) $(PYFLAGS)
 
 linsys.o: asm/linsys.asm
 	$(FSM) asm/linsys.asm
 	mv asm/linsys.asm .
 
-clean
+clean:
 	rm -f *.o
