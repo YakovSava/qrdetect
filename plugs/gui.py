@@ -1,7 +1,7 @@
 from tkinter.messagebox import askokcancel, showerror
 from toml import loads
 from customtkinter import CTk, CTkLabel, CTkEntry, CTkButton,\
-    CTkOptionMenu
+    CTkOptionMenu, CTkFrame
 
 class AppConfig:
 
@@ -18,15 +18,13 @@ class AppConfig:
 
 _config = AppConfig()
 
-class App(CTk):
+class AppCreate(CTk):
 
     def __init__(self):
         super().__init__()
 
         self.title("CityBox: QR Generator")
         self.geometry("500x400")
-
-        # self._img_path = img_path
 
         self._start()
 
@@ -91,6 +89,66 @@ class App(CTk):
             self._switch()
 
 
+
+class AppScan(CTk):
+
+    def __init__(self):
+        super().__init__()
+
+        self.title("CityBox: QR Scaner")
+        self.geometry("500x400")
+
+        self._login_window()
+
+    def _login_window(self):
+        self.auth_frame = CTkFrame(master=self)
+        self.auth_frame.pack(pady=20, padx=60)
+
+        self.login_label = CTkLabel(master=self.auth_frame, text="Пожалуйста, войдите в систему")
+        self.login_label.pack(pady=10)
+
+        self.username_entry = CTkEntry(master=self.auth_frame, placeholder_text="Введите ID бригады")
+        self.username_entry.pack(pady=10)
+
+        self.login_button = CTkButton(master=self.auth_frame, text="Войти", command=self._authorize)
+        self.login_button.pack(pady=20)
+
+    def _authorize(self):
+        if self.username_entry.get() not in _config.brigades:
+            showerror('Ошибка!', 'Такого ID не существует')
+        else:
+            self._open_photo_window()
+
+    def _quit_from_frame(self):
+        if askokcancel('Подтверждение', 'Вы точно хотите выйти?'):
+            self.quit()
+        else:
+            pass
+
+    def _open_photo_window(self):
+        self.auth_frame.destroy()
+
+        self.photo_frame = CTkFrame(master=self)
+        self.photo_frame.pack(pady=20, padx=60)
+
+        self.exit_button = CTkButton(master=self.photo_frame, text="Выйти", command=self.quit)
+        self.exit_button.pack(anchor='nw', pady=20)
+
+        self._photo_element = CTkLabel(master=self.photo_frame)
+        self._update_photo()
+        self._photo_element.pack(pady=10)
+
+        self.photo_description = CTkLabel(master=self.photo_frame, text="Здесь будет описание фото")
+        self.photo_description.pack(pady=10)
+
+        self.after(1000, self._update_photo)
+
+    def _update_photo(self):
+        # Здесь ваш код для загрузки нового изображения
+        # Пример: self._photo_element.config(image=новое_изображение)
+        pass  # Удалите pass и добавьте здесь свой код
+
+
 if __name__ == "__main__":
-    App().mainloop()
+    AppScan().mainloop()
 
