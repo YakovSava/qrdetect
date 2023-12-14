@@ -1,9 +1,12 @@
 from tkinter.messagebox import askokcancel, showerror
+from threading import Thread
+from time import sleep
 from toml import loads
+from typing import Callable
 from customtkinter import CTk, CTkLabel, CTkEntry, CTkButton,\
     CTkOptionMenu, CTkFrame, CTkImage
 from PIL import Image
-from qrdecoder import Decoder
+from .qrdecoder import Decoder
 
 class AppConfig:
 
@@ -104,6 +107,9 @@ class AppScan(CTk):
 
         self._login_window()
 
+        self._run = True
+        self._th = False
+
     def _login_window(self):
 
         self.login_label = CTkLabel(master=self, text="Пожалуйста, войдите в систему")
@@ -122,6 +128,7 @@ class AppScan(CTk):
             self._open_photo_window()
 
     def _quit_from_frame(self):
+        self._run = False
         if askokcancel('Подтверждение', 'Вы точно хотите выйти?'):
             self.exit_button.destroy()
             self._photo_element.destroy()
@@ -131,6 +138,9 @@ class AppScan(CTk):
         else:
             self._open_photo_window()
 
+    def _stop_check(self):
+        self._run = False
+
     def _open_photo_window(self):
         self.login_label.destroy()
         self.username_entry.destroy()
@@ -138,6 +148,9 @@ class AppScan(CTk):
 
         self.exit_button = CTkButton(master=self, text="Выйти", command=self._quit_from_frame)
         self.exit_button.pack(anchor='nw', pady=20)
+
+        # self.stop_button = CTkButton(master=self, text="Тестово остановить процесс", command=self._stop_check)
+        # self.stop_button.pack(anchor='nw', pady=20)
 
         self._photo_element = CTkLabel(master=self,
                                        image=CTkImage(light_image=Image.open('white.jpg'),
@@ -151,7 +164,16 @@ class AppScan(CTk):
 
         self._update_photo()
 
-        self.after(1000, self._update_photo)
+        if not self._th:
+            self._th = Thread(target=self._update_after, args=(lambda: self._run, 1,))
+            self._th.start()
+
+    def _update_after(self, func:Callable, sec:float):
+        while True:
+            sleep(sec)
+            self._update_photo()
+            if not func():
+                break
 
     def _update_photo(self):
         img, data = self.dec.decode()

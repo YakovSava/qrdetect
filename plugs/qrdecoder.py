@@ -11,6 +11,7 @@ class Decoder:
         data, bbox, _ = self._detector.detectAndDecode(img)
         cv2.imwrite('temp.jpg', img)
         if bbox is not None:
+            print(data)
             return 'temp.jpg', data
         else:
             return 'temp.jpg', False
