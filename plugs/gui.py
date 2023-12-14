@@ -3,6 +3,7 @@ from toml import loads
 from customtkinter import CTk, CTkLabel, CTkEntry, CTkButton,\
     CTkOptionMenu, CTkFrame, CTkImage
 from PIL import Image
+from qrdecoder import Decoder
 
 class AppConfig:
 
@@ -93,8 +94,10 @@ class AppCreate(CTk):
 
 class AppScan(CTk):
 
-    def __init__(self):
+    def __init__(self, decoder:Decoder=Decoder()):
         super().__init__()
+
+        self.dec = decoder
 
         self.title("CityBox: QR Scaner")
         self.geometry("500x400")
@@ -141,17 +144,24 @@ class AppScan(CTk):
                                                       dark_image=Image.open('white.jpg'),
                                                       size=(150, 100)),
                                        text='')
-        self._update_photo()
         self._photo_element.pack(pady=10)
 
         self.photo_description = CTkLabel(master=self, text="Здесь будет описание фото")
         self.photo_description.pack(pady=10)
 
+        self._update_photo()
+
         self.after(1000, self._update_photo)
 
     def _update_photo(self):
-        # Example: self._photo_element.config(image=новое_изображение)
-        pass
+        img, data = self.dec.decode()
+        if data:
+            self.photo_description.configure(require_redraw=True, text=data)
+        else:
+            self.photo_description.configure(require_redraw=True, text="Не распознано")
+        self._photo_element.configure(require_redraw=True, image=CTkImage(light_image=Image.open(img),
+                                                                          dark_image=Image.open(img),
+                                                                          size=(150, 100)))
 
 
 if __name__ == "__main__":
