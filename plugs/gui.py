@@ -25,13 +25,14 @@ _config = AppConfig()
 
 class AppCreate(CTk):
 
-    def __init__(self):
+    def __init__(self, func:Callable):
         super().__init__()
 
         self.title("CityBox: QR Generator")
         self.geometry("500x400")
-
         self._start()
+
+        self._fnc = func
 
     def _start(self):
         self.idlabel = CTkLabel(self, text="Введите пожалуйста ID бригады", anchor="center")
@@ -53,7 +54,10 @@ class AppCreate(CTk):
         if not self.size_menu.get().isnumeric():
             showerror("Ошибка!", "Введите только цифры!")
             return
-        showerror("Заглушка", f"Ну типа отправлено\nЦвет: {self.color_menu.get()}\nРазмер: {self.size_menu.get()}")
+        self._fnc(
+            color=self.color_menu.get(),
+            size=self.size_menu.get()
+        )
 
     def _switch(self):
         self.idlabel.destroy()

@@ -11,3 +11,4 @@ else:
 from plugs import Cache, Decoder, Config,\
     AppCreate, AppScan, QRCodeGenerator
 
+
