@@ -7,6 +7,7 @@ from customtkinter import CTk, CTkLabel, CTkEntry, CTkButton,\
     CTkOptionMenu, CTkFrame, CTkImage
 from PIL import Image
 from .qrdecoder import Decoder
+from .qrcreater import QRCodeGenerator
 
 class AppConfig:
 

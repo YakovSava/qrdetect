@@ -9,6 +9,8 @@ if args.optimize is not None:
 else:
     from plugs import read, write, Connector
 from plugs import Cache, Decoder, Config,\
-    AppCreate, AppScan, QRCodeGenerator
+    AppCreate, AppScan, QRCodeGenerator, MoySklad
 
-
+config_getter = Config(config_filename='conf.ini')
+qr_generator
+app_qr_creater = AppCreate()
