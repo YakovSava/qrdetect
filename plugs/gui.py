@@ -30,7 +30,7 @@ class AppCreate(CTk):
         super().__init__()
 
         self.title("CityBox: QR Generator")
-        self.geometry("500x400")
+        self.geometry("600x500")
         self._start()
 
         self._fnc = func
