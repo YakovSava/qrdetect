@@ -108,7 +108,7 @@ class AppScan(CTk):
         self.dec = decoder
 
         self.title("CityBox: QR Scaner")
-        self.geometry("500x400")
+        self.geometry("600x500")
 
         self._login_window()
 
@@ -128,13 +128,13 @@ class AppScan(CTk):
 
     def _authorize(self):
         if self.username_entry.get() not in _config.brigades:
-            showerror('Ошибка!', 'Такого ID не существует')
+            showerror('CityBox: Ошибка!', 'Такого ID не существует')
         else:
             self._open_photo_window()
 
     def _quit_from_frame(self):
         self._run = False
-        if askokcancel('Подтверждение', 'Вы точно хотите выйти?'):
+        if askokcancel('CityBox: Подтверждение', 'Вы точно хотите выйти?'):
             self.exit_button.destroy()
             self._photo_element.destroy()
             self.photo_description.destroy()
