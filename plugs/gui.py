@@ -47,13 +47,13 @@ class AppCreate(CTk):
 
     def _check_brigades(self):
         if self.identer.get() not in _config.brigades:
-            showerror("Ошибка!", "ID бригады неверен")
+            showerror("CityBox: Ошибка!", "ID бригады неверен")
         else:
             self._switch()
 
     def _send(self):
         if not self.size_menu.get().isnumeric():
-            showerror("Ошибка!", "Введите только цифры!")
+            showerror("CityBox: Ошибка!", "Введите только цифры!")
             return
         self._fnc(
             color=self.color_menu.get(),
@@ -93,7 +93,7 @@ class AppCreate(CTk):
         self.size_menu.destroy()
         self.okbut.destroy()
 
-        if askokcancel("QR Generator: question", "Вы уверены?"):
+        if askokcancel("CityBox: Подтверждение", "Вы уверены?"):
             self._start()
         else:
             self._switch()
