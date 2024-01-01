@@ -4,5 +4,5 @@ class Printer:
         pass
         # printer initialization
 
-    def print(self, data:str):
+    def print(self, data: str):
         return data
