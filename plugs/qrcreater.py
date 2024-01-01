@@ -3,13 +3,14 @@ from typing import Any
 from qrcode import QRCode, constants
 from PIL import Image
 
+
 class QRCodeGenerator:
 
     def __init__(self,
-            back_img:str=None,
-            qr_model:QRCode=None,
-            qr_path:str=None
-        ):
+                 back_img: str=None,
+                 qr_model: QRCode=None,
+                 qr_path: str=None
+                 ):
         if (not back_img) or (not qr_path):
             raise
         else:
@@ -27,24 +28,26 @@ class QRCodeGenerator:
         else:
             self._qr_model = qr_model
 
-    def _made_filename(self, data:Any) -> str:
+    def _made_filename(self, data: Any) -> str:
         return sha1(data.encode()).hexdigest()
 
-    def make_qr(self, data:Any=None) -> str:
+    def make_qr(self, data: Any=None) -> str:
         data = str(data)
-        filename = self._qr_path+self._made_filename(data)+".png"
+        filename = self._qr_path + self._made_filename(data) + ".png"
 
         self._qr_model.add_data(data)
         self._qr_model.make(fit=True)
 
-        qr_img = self._qr_model.make_image(fill_color="black", back_color="white")
+        qr_img = self._qr_model.make_image(
+            fill_color="black", back_color="white")
         qr_img = qr_img.convert("RGBA")
 
         qr_width, qr_height = qr_img.size
         center_width, center_height = self._center_image.size
         center_x = int((qr_width - center_width) / 2)
         center_y = int((qr_height - center_height) / 2)
-        qr_img.paste(self._center_image, (center_x, center_y), self._center_image)
+        qr_img.paste(self._center_image, (center_x,
+                                          center_y), self._center_image)
 
         qr_img.save(filename)
         return filename

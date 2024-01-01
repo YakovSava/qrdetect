@@ -1,9 +1,10 @@
 from toml import dumps, loads
 from typing import Any
 
+
 class Config:
 
-    def __init__(self, config_filename:str=""):
+    def __init__(self, config_filename: str=""):
         if not config_filename:
             raise
         self._conf = {}
@@ -13,5 +14,5 @@ class Config:
     def _reload(self) -> None:
         pass
 
-    def get(self, key:str) -> Any:
+    def get(self, key: str) -> Any:
         return self._conf.get(key)

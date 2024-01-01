@@ -17,14 +17,18 @@ decoder = Decoder()
 mosk = MoySklad()
 scaner = AppScan(decoder=decoder)
 
+
 def _send(color=None, size=None):
     id = mosk.send(color=color, size=size)
     qr_coder.make_qr(id)
 
+
 creater = AppCreate(func=_send)
+
 
 def run():
     pass
+
 
 if __name__ == "__main__":
     run()

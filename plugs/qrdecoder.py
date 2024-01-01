@@ -1,5 +1,6 @@
 import cv2
 
+
 class Decoder:
 
     def __init__(self):
