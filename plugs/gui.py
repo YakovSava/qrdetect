@@ -6,8 +6,8 @@ from typing import Callable
 from customtkinter import CTk, CTkLabel, CTkEntry, CTkButton,\
     CTkOptionMenu, CTkFrame, CTkImage
 from PIL import Image
-from .qrdecoder import Decoder
-from .qrcreater import QRCodeGenerator
+from qrdecoder import Decoder
+from qrcreater import QRCodeGenerator
 
 
 class AppConfig:
@@ -205,4 +205,6 @@ class AppScan(CTk):
 
 
 if __name__ == "__main__":
-    AppScan().mainloop()
+    def test(*args, **kwargs):
+        pass
+    AppCreate(test).mainloop()
