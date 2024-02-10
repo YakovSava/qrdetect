@@ -1,8 +1,11 @@
 from tkinter.messagebox import askokcancel, showerror
 from toml import loads
-from typing import Callable
+from typing import Callable, TYPE_CHECKING
 from customtkinter import CTk, CTkLabel, CTkEntry, CTkButton,\
     CTkOptionMenu
+
+if TYPE_CHECKING:
+    from .barcode import Barcode
 
 class AppConfig:
 
@@ -96,3 +99,13 @@ class AppCreate(CTk):
             self._start()
         else:
             self._switch()
+
+class AppScaner(CTk):
+
+    def __init__(self, barcoder:'Barcode'):
+        super().__init__()
+
+        self.title("CityBox: QR Generator")
+        self.geometry("600x500")
+
+        self._bar = barcoder

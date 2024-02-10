@@ -1,12 +1,8 @@
-from pyEanGenerator import Ean8Generator as EAN8
+from barcode import get
+from barcode.writer import ImageWriter
 
-testBarCode = EAN8('20044223355')
+ean_code = '4605393003315'
 
-## show barecode on window
-testBarCode.showBarcode()
+ean = get('ean13', ean_code, writer=ImageWriter())
 
-## save EAN as svg file
-testBarCode.saveAsSvg("myEan.svg")
-
-## save EAN as png file (need pillow)
-testBarCode.saveAsImg("myEan.png")
+filename = ean.save('test_code')
