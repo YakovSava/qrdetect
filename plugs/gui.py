@@ -214,7 +214,9 @@ class AppScaner(CTk):
 # Запуск приложения
 if __name__ == "__main__":
     def send(*args, **kwargs):
-        print(args, **kwargs)
+        print(args, kwargs)
+
+    #app = AppCreate(func=send)4605393003315
 
     app = AppScaner(send)
     #app = UnderAppScanner()
