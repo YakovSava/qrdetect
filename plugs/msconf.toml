@@ -1,4 +1,5 @@
 name = 3
+
 [default]
-    register = ""
-    write_down = ""
+write_down = ""
+register = ""

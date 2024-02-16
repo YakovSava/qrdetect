@@ -1,7 +1,7 @@
 import base64
 import requests
 
-from time import sleep
+from time import strftime
 from json import loads as loads_json, dumps as dumps_json
 from toml import loads as loads_toml, dumps as dumps_toml
 from typing import Callable
@@ -12,7 +12,7 @@ from random import randint  # A temporary solution
 
 class _MoySkladConfigBinder:
 
-    def __init__(self, config_filename: str = 'msconfig.toml'):
+    def __init__(self, config_filename: str = 'msconf.toml'):
         self._filename = config_filename
         self.config = {}
         self._reload()
@@ -93,10 +93,35 @@ class MoySklad:
         return self._get_all_lambda(data=self._get()['rows'], lam=self._fmap)
 
     def _test_register_product(self):
-        # data = self._get(method='entity/enter')
-        # with open('test_reg.json', 'w', encoding='utf-8') as file:
-        #     file.write(dumps(data))
-        self._get
+        '''
+        Need this:
+        {
+            "name": "enter100",
+            "externalCode": "34981sawfa42kek",
+            "moment": "2016-06-21 16:56:52",
+            "applicable": true,
+            "sum": 51241240
+            "organization": ...
+            "store": ...
+            "positions": [{
+                "quantity": {quantity},
+                "price": 0.0,
+                "assortment": {
+                    "meta": {
+                        "href": "https://api.moysklad.ru/api/remap/1.2/entity/product/{product_uuid}",
+                        "metadataHref": "https://api.moysklad.ru/api/remap/1.2/entity/product/metadata",
+                        "type": "product",
+                        "mediaType": "application/json"
+                    }
+                },
+                "overhead": 0
+                }]
+            }
+        '''
+        data = self._get(method='entity/enter')
+        pprint(data)
+        self._binder.config['default']['register'] = str({'store': data['rows'][0]['store'], 'organization': data['rows'][0]['organization']})
+        self._binder.edit(self._binder.config)
 
     def _test_write_downs_product(self):
         ...
