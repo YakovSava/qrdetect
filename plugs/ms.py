@@ -1,14 +1,17 @@
 import base64
 import requests
 
+from string import ascii_letters
 from time import strftime
 from json import loads as loads_json, dumps as dumps_json
 from toml import loads as loads_toml, dumps as dumps_toml
 from typing import Callable
 from pprint import pprint  # A temporary solution
 from sys import argv  # A temporary solution
-from random import randint  # A temporary solution
+from random import choice, randint # E.g.
 
+def _get_code():
+    return "".join(choice(ascii_letters) for _ in range(randint(0, 10)))
 
 class _MoySkladConfigBinder:
 
@@ -96,11 +99,11 @@ class MoySklad:
         '''
         Need this:
         {
-            "name": "enter100",
+            "name": "{name}",
             "externalCode": "34981sawfa42kek",
-            "moment": "2016-06-21 16:56:52",
+            "moment": "{strftime("%Y-%m-%d %H:%M:%S")}",
             "applicable": true,
-            "sum": 51241240
+            "sum": 0
             "organization": ...
             "store": ...
             "positions": [{
@@ -118,10 +121,38 @@ class MoySklad:
                 }]
             }
         '''
-        data = self._get(method='entity/enter')
-        pprint(data)
-        self._binder.config['default']['register'] = str({'store': data['rows'][0]['store'], 'organization': data['rows'][0]['organization']})
+        if not self._binder.config['default']['register']:
+            data = self._get(method='entity/enter')
+            self._binder.config['default']['register'] = dumps_json({'store': data['rows'][0]['store'], 'organization': data['rows'][0]['organization']})
+            self._binder.edit(self._binder.config)
+        resp = self._post(
+            method='entity/enter',
+            data={
+                'name': str(self._binder.config['name']),
+                "externalCode": _get_code(),
+                "moment": f"{strftime('%Y-%m-%d %H:%M:%S')}",
+                "applicable": True,
+                "sum": 0.0,
+                "positions": [
+                    {
+                        "quantity": 10,
+                        "price": 0.0,
+                        "assortment": {
+                            "meta": {
+                                "href": "https://api.moysklad.ru/api/remap/1.2/entity/product/...", # e.g.
+                                "metadataHref": "https://api.moysklad.ru/api/remap/1.2/entity/product/metadata",
+                                "type": "product",
+                                "mediaType": "application/json"
+                            }
+                        },
+                        "overhead": 0
+                    }
+                ]
+            } | loads_json(self._binder.config['default']['register'])
+        )
+        self._binder.config['name'] += 1
         self._binder.edit(self._binder.config)
+        return resp
 
     def _test_write_downs_product(self):
         ...
@@ -133,8 +164,40 @@ class MoySklad:
             if item['barcode'] == barcode:
                 return item
 
-    def register_product(self, uuid: str = '', quantity: int = 0):
-        ...
+    def register_product(self, uuids: list = [], quantity: int = 0):
+        if not self._binder.config['default']['register']:
+            data = self._get(method='entity/enter')
+            self._binder.config['default']['register'] = dumps_json(
+                {'store': data['rows'][0]['store'], 'organization': data['rows'][0]['organization']})
+            self._binder.edit(self._binder.config)
+        resp = self._post(
+            method='entity/enter',
+            data={
+                     'name': str(self._binder.config['name']),
+                     "moment": f"{strftime('%Y-%m-%d %H:%M:%S')}",
+                     "applicable": True,
+                     "sum": 0.0,
+                     "positions": [
+                         {
+                             "quantity": quantity,
+                             "price": 0.0,
+                             "assortment": {
+                                 "meta": {
+                                     "href": f"https://api.moysklad.ru/api/remap/1.2/entity/product/{uuid}",
+                                     # e.g.
+                                     "metadataHref": "https://api.moysklad.ru/api/remap/1.2/entity/product/metadata",
+                                     "type": "product",
+                                     "mediaType": "application/json"
+                                 }
+                             },
+                             "overhead": 0
+                         }
+                     for uuid in uuids]
+                 } | loads_json(self._binder.config['default']['register'])
+        )
+        self._binder.config['name'] += 1
+        self._binder.edit(self._binder.config)
+        return resp
 
     def write_downs_product(self, uuid: str = None):
         ...
@@ -142,4 +205,4 @@ class MoySklad:
 
 if __name__ == '__main__':
     ms = MoySklad(token=argv[1], test=False)
-    ms._test_register_product()
+    ms._test_write_downs_product()
