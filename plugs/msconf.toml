@@ -1,5 +1,4 @@
 reg_name = 7
-wd_name = 2
 
 [default]
 write_down = "{\"store\": {\"meta\": {\"href\": \"https://api.moysklad.ru/api/remap/1.2/entity/store/a55cdeda-cb54-11ee-0a80-01ed00000b8e\", \"metadataHref\": \"https://api.moysklad.ru/api/remap/1.2/entity/store/metadata\", \"type\": \"store\", \"mediaType\": \"application/json\", \"uuidHref\": \"https://online.moysklad.ru/app/#warehouse/edit?id=a55cdeda-cb54-11ee-0a80-01ed00000b8e\"}}, \"organization\": {\"meta\": {\"href\": \"https://api.moysklad.ru/api/remap/1.2/entity/organization/a55a55a3-cb54-11ee-0a80-01ed00000b8b\", \"metadataHref\": \"https://api.moysklad.ru/api/remap/1.2/entity/organization/metadata\", \"type\": \"organization\", \"mediaType\": \"application/json\", \"uuidHref\": \"https://online.moysklad.ru/app/#mycompany/edit?id=a55a55a3-cb54-11ee-0a80-01ed00000b8b\"}}}"

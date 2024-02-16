@@ -207,7 +207,7 @@ class MoySklad:
             if item['barcode'] == barcode:
                 return item
 
-    def register_product(self, uuids: list = [], quantity: int = 0):
+    def register_product(self, uuids: list = [], quantitys: list[int] = []):
         if not self._binder.config['default']['register']:
             data = self._get(method='entity/enter')
             self._binder.config['default']['register'] = dumps_json(
@@ -234,17 +234,39 @@ class MoySklad:
                              },
                              "overhead": 0
                          }
-                     for uuid in uuids]
+                     for quantity, uuid in zip(quantitys, uuids)]
                  } | loads_json(self._binder.config['default']['register'])
         )
         self._binder.config['reg_name'] += 1
         self._binder.edit(self._binder.config)
         return resp
 
-    def write_downs_product(self, uuid: str = None):
-        ...
+    def write_downs_product(self, uuids: str = None, quantitys:list[int]=[]):
+        if not self._binder.config['default']['write_down']:
+            data = self._get(method='entity/loss')
+            self._binder.config['default']['write_down'] = dumps_json(
+                {'store': data['rows'][0]['store'], 'organization': data['rows'][0]['organization']})
+            self._binder.edit(self._binder.config)
+        resp = self._post(
+            method='entity/loss',
+            data={
+                     "positions": [
+                         {
+                             "quantity": quantity,
+                             "assortment": {
+                                 "meta": {
+                                     "href": f"https://api.moysklad.ru/api/remap/1.2/entity/product/{uuid}",
+                                     "metadataHref": "https://api.moysklad.ru/api/remap/1.2/entity/product/metadata",
+                                     "type": "product",
+                                     "mediaType": "application/json"
+                                 }
+                             }
+                         }
+                     for quantity, uuid in zip(quantitys, uuids)]
+                 } | loads_json(self._binder.config['default']['write_down'])
+        )
+        return resp
 
 
 if __name__ == '__main__':
     ms = MoySklad(token=argv[1], test=False)
-    ms._test_write_downs_product()
